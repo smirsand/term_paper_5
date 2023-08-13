@@ -9,12 +9,8 @@ EMPLOYERS_IDS = ['3529', '80', '4181', '2492', '4023', '3783', '6591', '3388', '
 def main():
     database_name = 'headhanter'
     db = DBManager()
-    try:
-        db.drop_table(database_name, **params)  # Удаление 'headhanter.'
-    except Exception:
-        None
-
-    db_create()  # Создание БД.
+    db_create(database_name, **params)  # Создание БД.
+    # db.create_table()
 
 
 if __name__ == '__main__':
