@@ -20,6 +20,8 @@ def db_create(database: str, **params):
 
 
 def get_company_vacancies(employer_id):
+    """ Парсинг Head Hanter"""
+
     url = f'https://api.hh.ru/vacancies'
     params = {'employer_id': employer_id, 'per_page': 100, 'area': 2}
     response = requests.get(url, params=params)
@@ -39,6 +41,7 @@ def get_company_vacancies(employer_id):
 
 def insert_data_to_tables(vacancy: list[dict[str, Any]], database_name: str, params: dict[str, Any]) -> None:
     """ Функция для наполнения таблиц данными."""
+
     conn = psycopg2.connect(dbname=database_name, **params)
     with conn.cursor() as cur:
         list_id = []
