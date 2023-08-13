@@ -20,7 +20,7 @@ def db_create(database: str, **params):
 
 
 def get_company_vacancies(employer_id):
-    """ Парсинг Head Hanter"""
+    """ Получает данные по API с HeadHunter, принимает id компании"""
 
     url = f'https://api.hh.ru/vacancies'
     params = {'employer_id': employer_id, 'per_page': 100, 'area': 2}
@@ -52,7 +52,7 @@ def insert_data_to_tables(vacancy: list[dict[str, Any]], database_name: str, par
                 list_id.append(employer_id)
                 cur.execute(
                     """
-                    INSERT INTO company (name_employer)
+                    INSERT INTO employers (name_employer)
                     VALUES (%s)
                     RETURNING employer_id
                     """,

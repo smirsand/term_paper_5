@@ -1,1 +1,2 @@
-pyscopg2==23.2.1
+psycopg2==2.9.7
+requests==2.31.0
