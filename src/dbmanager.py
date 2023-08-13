@@ -8,7 +8,7 @@ class DBManager:
 
     def __init__(self):
         params = config()
-        self.conn = psycopg2.connect(**params)
+        self.conn = psycopg2.connect(database='headhanter', **params)
 
     def get_companies_and_vacancies_count(self):
         """ Получает список всех компаний и количество вакансий у каждой компании."""
@@ -75,6 +75,7 @@ class DBManager:
                 name_employer varchar(100) NOT NULL
                 )
                 """)
+            print("OK-1")
 
         with self.conn.cursor() as cur:
             cur.execute("""
@@ -86,11 +87,15 @@ class DBManager:
                 alternate_url varchar NOT NULL
                 )
                 """)
+            print("OK-2")
 
-    def drop_table(self, database_name, **params):
-        conn = psycopg2.connect(dbname='postgres', **params)
-        conn.autocommit = True
-        cur = conn.cursor()
-        cur.execute(f'DROP DATABASE {database_name}')
+        self.conn.commit()
 
-        conn.close()
+    def drop_table(self):
+        with self.conn.cursor() as cur:
+            cur.execute("""
+                DROP TABLE IF EXISTS vacancies;
+                DROP TABLE IF EXISTS company;
+                """)
+
+        self.conn.commit()
