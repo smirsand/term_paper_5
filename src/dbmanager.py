@@ -4,14 +4,14 @@ from src.config import config
 
 
 class DBManager:
-    ''' Класс для работы с БД.'''
+    """ Класс для работы с БД."""
 
     def __init__(self):
         params = config()
         self.conn = psycopg2.connect(**params)
 
     def get_companies_and_vacancies_count(self):
-        ''' Получает список всех компаний и количество вакансий у каждой компании.'''
+        """ Получает список всех компаний и количество вакансий у каждой компании."""
 
         with self.conn.cursor() as cur:
             cur.execute(
@@ -23,10 +23,8 @@ class DBManager:
                 print(row)
 
     def get_all_vacancies(self):
-
-        '''
-        Получает список всех вакансий с указанием названия компании, названия вакансии и зарплаты и ссылки на вакансию.
-        '''
+        """ Получает список всех вакансий с указанием названия компании,
+         названия вакансии и зарплаты и ссылки на вакансию."""
 
         with self.conn.cursor() as cur:
             cur.execute(
@@ -37,7 +35,7 @@ class DBManager:
                 print(row)
 
     def get_avg_salary(self):
-        ''' Получает среднюю зарплату по вакансиям.'''
+        """ Получает среднюю зарплату по вакансиям."""
 
         with self.conn.cursor() as cur:
             cur.execute(
@@ -47,7 +45,7 @@ class DBManager:
                 print(row)
 
     def get_vacancies_with_higher_salary(self):
-        ''' Получает список всех вакансий, у которых зарплата выше средней по всем вакансиям.'''
+        """ Получает список всех вакансий, у которых зарплата выше средней по всем вакансиям."""
 
         with self.conn.cursor() as cur:
             cur.execute(
@@ -58,7 +56,7 @@ class DBManager:
                 print(row)
 
     def get_vacancies_with_keyword(self):
-        ''' Получает список всех вакансий, в названии которых содержатся переданные в метод слова, например “java”.'''
+        """ Получает список всех вакансий, в названии которых содержатся переданные в метод слова, например “java”."""
 
         with self.conn.cursor() as cur:
             cur.execute(
@@ -67,11 +65,10 @@ class DBManager:
             for row in rows:
                 print(row)
 
-    def create_table(database_name: str, params: dict):
+    def create_table(self):
         """ Создание таблиц для сохранения данных о компаниях и вакансиях."""
 
-        conn = psycopg2.connect(dbname=database_name, **params)
-        with conn.cursor() as cur:
+        with self.conn.cursor() as cur:
             cur.execute("""
                 CREATE TABLE company(
                 employer_id SERIAL PRIMARY KEY,
@@ -79,7 +76,7 @@ class DBManager:
                 )
                 """)
 
-        with conn.cursor() as cur:
+        with self.conn.cursor() as cur:
             cur.execute("""
                 CREATE TABLE vacancies(
                 employer_id INT REFERENCES company(employer_id),
