@@ -3,17 +3,18 @@ from typing import Any
 import psycopg2
 import requests
 
-from src.config import config
 
+def db_create(database: str, **params):
+    """ Создание базы данных."""
 
-def db_create():
-    ''' Создание базы данных.'''
-
-    params = config()
     conn = psycopg2.connect(**params)
     conn.autocommit = True
     cur = conn.cursor()
-    cur.execute('CREATE DATABASE headhanter')
+    try:
+        cur.execute(f'DROP DATABASE {database}')
+    except:
+        pass
+    cur.execute(f'CREATE DATABASE {database}')
     cur.close()
     conn.close()
 
@@ -37,7 +38,7 @@ def get_company_vacancies(employer_id):
 
 
 def insert_data_to_tables(vacancy: list[dict[str, Any]], database_name: str, params: dict[str, Any]) -> None:
-    ''' Функция для наполнения таблиц данными.'''
+    """ Функция для наполнения таблиц данными."""
     conn = psycopg2.connect(dbname=database_name, **params)
     with conn.cursor() as cur:
         list_id = []
